@@ -10,6 +10,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var oldTime;
+
 var Game = exports.Game = function () {
 
   /**
@@ -34,8 +36,8 @@ var Game = exports.Game = function () {
     this.backCtx = this.backBuffer.getContext('2d');
 
     // Start the game loop
-    this.oldTime = performance.now();
-    this.paused = false;
+    oldTime = performance.now();
+    paused = false;
     window.requestAnimationFrame(this.loop);
   }
 
@@ -49,7 +51,7 @@ var Game = exports.Game = function () {
   _createClass(Game, [{
     key: 'pause',
     value: function pause(flag) {
-      this.paused = flag == true;
+      paused = flag == true;
     }
 
     /**
@@ -61,8 +63,8 @@ var Game = exports.Game = function () {
   }, {
     key: 'loop',
     value: function loop(newTime) {
-      var elapsedTime = newTime - this.oldTime;
-      this.oldTime = newTime;
+      var elapsedTime = newTime - oldTime;
+      oldTime = newTime;
 
       if (!this.paused) this.update(elapsedTime);
       this.render(elapsedTime, this.frontCtx);
@@ -88,6 +90,9 @@ var _game = require('./game');
 var canvas = document.getElementById('screen');
 var game = new _game.Game(canvas, update, render);
 
+var background = new Image();
+background.src = '/assets/bg.png';
+
 /**
  * @function update
  * Updates the game state, moving
@@ -110,7 +115,7 @@ function update(elapsedTime) {}
 function render(elapsedTime, ctx) {
 
   // TODO: Draw the game objects using the supplied context
-
+  if (background) ctx.drawImage(background, 0, 0);
 }
 
 },{"./game":1}]},{},[2]);

@@ -1,6 +1,7 @@
 "use strict;"
 
-export class Game {
+var oldTime;
+var paused = false;
 
   /**
    * @constructor Game
@@ -9,7 +10,7 @@ export class Game {
    * @param {function} updateFunction function to update the game
    * @param {function} renderFunction function to render the game
    */
-  constructor(screen, updateFunction, renderFunction) {
+   export function init(screen, updateFunction, renderFunction) {
     this.update = updateFunction;
     this.render = renderFunction;
 
@@ -22,8 +23,8 @@ export class Game {
     this.backCtx = this.backBuffer.getContext('2d');
 
     // Start the game loop
-    this.oldTime = performance.now();
-    this.paused = false;
+    oldTime = performance.now();
+    paused = false;
     window.requestAnimationFrame(this.loop);
   }
 
@@ -32,8 +33,8 @@ export class Game {
    * Pause or unpause the game
    * @param {bool} pause true to pause, false to start
    */
-  pause(flag) {
-    this.paused = (flag == true);
+  export function pause(flag) {
+    paused = (flag == true);
   }
 
   /**
@@ -41,9 +42,9 @@ export class Game {
    * The main game loop.
    * @param{time} the current time as a DOMHighResTimeStamp
    */
-  loop(newTime) {
-    var elapsedTime = newTime - this.oldTime;
-    this.oldTime = newTime;
+  export function loop(newTime) {
+    var elapsedTime = newTime - oldTime;
+    oldTime = newTime;
 
     if(!this.paused) this.update(elapsedTime);
     this.render(elapsedTime, this.frontCtx);
